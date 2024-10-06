@@ -15,6 +15,7 @@ Mobile Robot using ROS and ESP32 (rosserial).
 - ESP32.
 - Motors.
 - L298N.
+- Xbox Controller.
 - 18650 batteries.
 
 ## Software Requirements
@@ -46,6 +47,19 @@ source ~/.bashrc
 
 ## Usage
 After uploading the code to your ESP32 microcontroller you need to initialize the services.
+
+You can use any Controller that is listed in the [documentation](http://wiki.ros.org/joy). I'm personally
+using an 8bitdo Ultimate C 2.4GHz. It is not a Xbox Controller per se but I managed to find some drivers to 
+trick Linux into thinking it is a generic Xbox Controller. You can find the post [here](https://gist.github.com/ammuench/0dcf14faf4e3b000020992612a2711e2):
+
+```shell
+touch /etc/udev/rules.d/99-8bitdo-xinput.rules
+sudo nano /etc/udev/rules.d/99-8bitdo-xinput.rules
+```
+Inside 99-8bitdo-xinput.rules you type the following and save:
+```shell
+ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3106", RUN+="/sbin/modprobe xpad", RUN+="/bin/sh -c 'echo 2dc8 3106 > /sys/bus/usb/drivers/xpad/new_id'"
+```
 
 We initialize our master:
 ```shell
