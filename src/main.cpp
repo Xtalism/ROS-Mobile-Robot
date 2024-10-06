@@ -19,11 +19,13 @@ const uint16_t serverPort = 11411;
 WiFiClient client;
 ros::NodeHandle nh; 
 
-void stopMotors() {
+void stopFirstMotor() {
     digitalWrite(firstMotorOne, LOW);
     digitalWrite(firstMotorTwo, LOW);
     analogWrite(speedMotorOne, 0);
+}
 
+void stopSecondMotor() {
     digitalWrite(secondMotorOne, LOW);
     digitalWrite(secondMotorTwo, LOW);
     analogWrite(speedMotorTwo, 0);
@@ -40,10 +42,11 @@ void joyCallback(const sensor_msgs::Joy &joy_msg) {
     const int leftStickBackward = -1;
 
     const int rightStickForward = 1; 
-    const int righStickBackward = -1;
+    const int rightStickBackward = -1;
 
     int firstMotorState = (leftStickY > 0.1) ? leftStickForward : (leftStickY < -0.1) ? leftStickBackward : 0;
-    int secondMotorState = (rightStickY > 0.1) ? rightStickForward : (rightStickY < -0.1) ? righStickBackward : 0;
+
+    int secondMotorState = (rightStickY > 0.1) ? rightStickForward : (rightStickY < -0.1) ? rightStickBackward : 0;
     
     switch (firstMotorState) {
         case leftStickForward: 
@@ -57,7 +60,7 @@ void joyCallback(const sensor_msgs::Joy &joy_msg) {
             analogWrite(speedMotorOne, abs(leftStickY * 255));
             break;
         default: 
-            stopMotors(); 
+            stopFirstMotor();
             break;
     }
 
@@ -67,13 +70,13 @@ void joyCallback(const sensor_msgs::Joy &joy_msg) {
             digitalWrite(secondMotorTwo, LOW);
             analogWrite(speedMotorTwo, abs(rightStickY * 255));
             break;
-        case righStickBackward:
+        case rightStickBackward:
             digitalWrite(secondMotorOne, LOW);
             digitalWrite(secondMotorTwo, HIGH);
             analogWrite(speedMotorTwo, abs(rightStickY * 255));
             break;
         default:
-            stopMotors(); 
+            stopSecondMotor(); 
             break;
     }
 }
@@ -100,7 +103,9 @@ void setup() {
     nh.getHardware()->setConnection(server, serverPort); // TCP
     nh.initNode();
     nh.subscribe(sub);
-    stopMotors();
+    
+    stopFirstMotor();
+    stopSecondMotor();
 }
 
 void loop() {
