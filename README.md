@@ -8,7 +8,7 @@ Mobile Robot using ROS and ESP32 (rosserial).
   - [Hardware Requirements](#hardware-requirements)
   - [Software Requirements](#software-requirements)
   - [Installation](#installation)
-  - [Usage](#usage)
+  - [Controller Setup](#controller-setup)
   - [Initialize services.](#initialize-services)
   - [License](#license)
 
@@ -46,7 +46,7 @@ echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## Usage
+## Controller Setup
 You can use any controller listed in the [documentation](http://wiki.ros.org/joy). I'm personally
 using an 8bitdo Ultimate C 2.4GHz. It is not a Xbox Controller per se but I managed to find some drivers to 
 trick Linux into thinking it is a generic Xbox Controller ([you can find the post here](https://gist.github.com/ammuench/0dcf14faf4e3b000020992612a2711e2)):
