@@ -31,55 +31,39 @@ void stopSecondMotor() {
     analogWrite(speedMotorTwo, 0);
 }
 
-void joyCallback(const sensor_msgs::Joy &joy_msg) {
-    float leftStickX = joy_msg.axes[0];  // horizontal
-    float leftStickY = joy_msg.axes[4];  // vertical
+void controlMotor(int motorOnePin, int motorTwoPin, int motorSpeedPin, float stickY) {
+    const int stickForward = 1;
+    const int stickBackward = -1;
 
-    float rightStickX = joy_msg.axes[3]; // horizontal
-    float rightStickY = joy_msg.axes[1]; // vertical
+    int motorState = (stickY > 0.1) ? stickForward : (stickY < -0.1) ? stickBackward : 0;
 
-    const int leftStickForward = 1;
-    const int leftStickBackward = -1;
-
-    const int rightStickForward = 1; 
-    const int rightStickBackward = -1;
-
-    int firstMotorState = (leftStickY > 0.1) ? leftStickForward : (leftStickY < -0.1) ? leftStickBackward : 0;
-
-    int secondMotorState = (rightStickY > 0.1) ? rightStickForward : (rightStickY < -0.1) ? rightStickBackward : 0;
-    
-    switch (firstMotorState) {
-        case leftStickForward: 
-            digitalWrite(firstMotorOne, HIGH);
-            digitalWrite(firstMotorTwo, LOW);
-            analogWrite(speedMotorOne, abs(leftStickY * 255));
+    switch (motorState) {
+        case stickForward:
+            digitalWrite(motorOnePin, HIGH);
+            digitalWrite(motorTwoPin, LOW);
+            analogWrite(motorSpeedPin, abs(stickY * 255));
             break;
-        case leftStickBackward:
-            digitalWrite(firstMotorOne, LOW);
-            digitalWrite(firstMotorTwo, HIGH);
-            analogWrite(speedMotorOne, abs(leftStickY * 255));
-            break;
-        default: 
-            stopFirstMotor();
-            break;
-    }
-
-    switch (secondMotorState) {
-        case rightStickForward:
-            digitalWrite(secondMotorOne, HIGH);
-            digitalWrite(secondMotorTwo, LOW);
-            analogWrite(speedMotorTwo, abs(rightStickY * 255));
-            break;
-        case rightStickBackward:
-            digitalWrite(secondMotorOne, LOW);
-            digitalWrite(secondMotorTwo, HIGH);
-            analogWrite(speedMotorTwo, abs(rightStickY * 255));
+        case stickBackward:
+            digitalWrite(motorOnePin, LOW);
+            digitalWrite(motorTwoPin, HIGH);
+            analogWrite(motorSpeedPin, abs(stickY * 255));
             break;
         default:
-            stopSecondMotor(); 
+            digitalWrite(motorOnePin, LOW);
+            digitalWrite(motorTwoPin, LOW);
+            analogWrite(motorSpeedPin, 0);
             break;
     }
 }
+
+void joyCallback(const sensor_msgs::Joy &joy_msg) {
+    float leftStickY = joy_msg.axes[4];  // vertical 
+    float rightStickY = joy_msg.axes[1]; // vertical
+
+    controlMotor(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY);
+    controlMotor(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY);
+}
+
 
 ros::Subscriber<sensor_msgs::Joy> sub("/joy", joyCallback);
 
