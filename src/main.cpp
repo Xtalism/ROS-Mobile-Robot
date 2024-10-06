@@ -10,10 +10,10 @@ const int secondMotorOne = 4;
 const int secondMotorTwo = 2; 
 const int speedMotorTwo = 15; 
 
-const char* ssid = "MotherBase";
-const char* password = "@6830135@";
+const char* ssid = "SSID";
+const char* password = "PASSWORD";
 
-IPAddress server(192, 168, 100, 213);  // 192.168.100.213
+IPAddress server(192, 168, 0, 0);  // 192.168.100.213
 const uint16_t serverPort = 11411; 
 
 WiFiClient client;
