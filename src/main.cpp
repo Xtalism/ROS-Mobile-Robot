@@ -64,7 +64,6 @@ void joyCallback(const sensor_msgs::Joy &joy_msg) {
     controlMotor(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY);
 }
 
-
 ros::Subscriber<sensor_msgs::Joy> sub("/joy", joyCallback);
 
 void setup() {
