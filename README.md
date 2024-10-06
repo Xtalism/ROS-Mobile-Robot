@@ -65,6 +65,22 @@ Reload udevadm service
 sudo udevadm control --reload
 ```
 
+You also need to make your [joystick device accesible](http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick):
+
+```shell
+ls -l /dev/input/jsX
+```
+
+You will see something similar to:
+```shell
+crw-rw-XX- 1 root dialout 188, 0 2009-08-14 12:04 /dev/input/jsX
+```
+
+We need to change XX to rw:
+```shell
+sudo chmod a+rw /dev/input/jsX
+```
+
 ## Initialize services.
 
 We initialize our master:
