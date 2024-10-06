@@ -9,7 +9,7 @@ Mobile Robot using ROS and ESP32 (rosserial).
   - [Software Requirements](#software-requirements)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Initialize the services.](#initialize-the-services)
+  - [Initialize services.](#initialize-services)
   - [License](#license)
 
 ## Hardware Requirements
@@ -60,7 +60,7 @@ Inside 99-8bitdo-xinput.rules you type the following and save:
 ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3106", RUN+="/sbin/modprobe xpad", RUN+="/bin/sh -c 'echo 2dc8 3106 > /sys/bus/usb/drivers/xpad/new_id'"
 ```
 
-## Initialize the services.
+## Initialize services.
 
 We initialize our master:
 ```shell
