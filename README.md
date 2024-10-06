@@ -60,6 +60,11 @@ Inside 99-8bitdo-xinput.rules you type the following and save:
 ACTION=="add", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="3106", RUN+="/sbin/modprobe xpad", RUN+="/bin/sh -c 'echo 2dc8 3106 > /sys/bus/usb/drivers/xpad/new_id'"
 ```
 
+Reload udevadm service
+```shell
+sudo udevadm control --reload
+```
+
 ## Initialize services.
 
 We initialize our master:
