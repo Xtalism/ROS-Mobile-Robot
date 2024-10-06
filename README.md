@@ -68,4 +68,4 @@ rostopic echo joy
 ```
 
 ## License
-[Under MIT License](https://opensource.org/osd).
+[MIT License](https://opensource.org/osd).
