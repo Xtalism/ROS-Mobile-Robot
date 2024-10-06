@@ -13,7 +13,7 @@ const int speedMotorTwo = 15;
 const char* ssid = "SSID";
 const char* password = "PASSWORD";
 
-IPAddress server(192, 168, 0, 0);  // 192.168.100.213
+IPAddress server(192, 168, 0, 0);
 const uint16_t serverPort = 11411; 
 
 WiFiClient client;
