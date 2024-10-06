@@ -45,7 +45,27 @@ source ~/.bashrc
 ```
 
 ## Usage
-Explain how to use the project, including any important commands or configurations.
+After uploading the code to your ESP32 microcontroller you need to initialize the services.
+
+We initialize our master:
+```shell
+roscore
+```
+
+To initialize our serial node using tcp protocol:
+```shell
+rosrun rosserial_python serial_node.py tcp
+```
+
+To initialize our joy node using joy package:
+```shell
+rosrun joy joy_node
+```
+
+If we want to see our joy node response:
+```shell
+rostopic echo joy
+```
 
 ## License
-Include the license information for the project.
+[Under MIT License](https://opensource.org/osd).
