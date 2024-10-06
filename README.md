@@ -103,5 +103,7 @@ If we want to see our joy node response:
 rostopic echo joy
 ```
 
+![Terminal](terminal.png)
+
 ## License
 [MIT License](https://opensource.org/osd)
