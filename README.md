@@ -49,7 +49,7 @@ source ~/.bashrc
 ## Usage
 You can use any controller listed in the [documentation](http://wiki.ros.org/joy). I'm personally
 using an 8bitdo Ultimate C 2.4GHz. It is not a Xbox Controller per se but I managed to find some drivers to 
-trick Linux into thinking it is a generic Xbox Controller (you can find the post [here](https://gist.github.com/ammuench/0dcf14faf4e3b000020992612a2711e2)):
+trick Linux into thinking it is a generic Xbox Controller ([you can find the post here](https://gist.github.com/ammuench/0dcf14faf4e3b000020992612a2711e2)):
 
 ```shell
 touch /etc/udev/rules.d/99-8bitdo-xinput.rules
