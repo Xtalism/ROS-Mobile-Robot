@@ -21,7 +21,7 @@ Mobile Robot using ROS and ESP32 (rosserial).
 In order for the project to work we need to have installed [Ubuntu 20.04 LTS Focal Fossa](https://releases.ubuntu.com/focal/) alocated
 in a partition with a Windows dual boot or as the main Operating System of your machine. 
 
-![Ubuntu Focal Fossa](ubuntu.jpeg)
+![Ubuntu Focal Fossa](https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/2X/c/cc5769b9fb7c4c088876fbe477452a44e1c36a4d.jpeg)
 
 You can try to virtualize it but in my experience, networking and driver problems arouse.
 
