@@ -19,9 +19,9 @@ Mobile Robot using ROS and ESP32 (rosserial).
 
 ## Software Requirements
 In order for the project to work we need to have installed [Ubuntu 20.04 LTS Focal Fossa](https://releases.ubuntu.com/focal/) alocated
-in a partiton with a Windows dual boot or as the main Operating System of your machine. 
+in a partition with a Windows dual boot or as the main Operating System of your machine. 
 
-You can try to virtualize it but in my experience, networking and driver problems arouse when working.
+You can try to virtualize it but in my experience, networking and driver problems arouse.
 
 ## Installation
 We need to install [ROS Noetic Ninjemys](https://wiki.ros.org/noetic), you can follow the [documentation](https://wiki.ros.org/noetic/Installation/Ubuntu) on how to install it or you can follow and run these few commands inside Ubuntu's terminal:
