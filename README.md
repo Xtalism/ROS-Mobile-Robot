@@ -15,7 +15,7 @@ Mobile Robot using ROS and ESP32 (rosserial).
 - ESP32.
 - Motors.
 - L298N.
-- 18650 batteries (adds up to 14v).
+- 18650 batteries.
 
 ## Software Requirements
 In order for the project to work we need to have installed [Ubuntu 20.04 LTS Focal Fossa](https://releases.ubuntu.com/focal/) alocated
