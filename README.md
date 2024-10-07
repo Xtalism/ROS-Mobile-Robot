@@ -1,24 +1,21 @@
 # ROS-Mobile-Robot
 
-Mobile Robot using ROS and ESP32 (rosserial)
+Mobile Robot using ROS and ESP32 (rosserial).
 
 ## Table of Contents
 - [ROS-Mobile-Robot](#ros-mobile-robot)
   - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
   - [Hardware Requirements](#hardware-requirements)
   - [Software Requirements](#software-requirements)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Contributing](#contributing)
   - [License](#license)
 
-## Introduction
-This is a Mobile Robot 
-
 ## Hardware Requirements
-- ESP32
-- Motors
+- ESP32.
+- Motors.
+- L298N.
+- 18650 batteries (adds up to 14v).
 
 ## Software Requirements
 In order for the project to work we need to have installed [Ubuntu 20.04 LTS Focal Fossa](https://releases.ubuntu.com/focal/) alocated
@@ -27,7 +24,7 @@ in a partiton with a Windows dual boot or as the main Operating System of your m
 You can try to virtualize it but in my experience, networking and driver problems arouse when working.
 
 ## Installation
-We need to install [ROS Noetic Ninjemys](https://wiki.ros.org/noetic), you can follow the [documentation](https://wiki.ros.org/noetic/Installation/Ubuntu) or you can follow and run these few commands inside Ubuntu's terminal:
+We need to install [ROS Noetic Ninjemys](https://wiki.ros.org/noetic), you can follow the [documentation](https://wiki.ros.org/noetic/Installation/Ubuntu) on how to install it or you can follow and run these few commands inside Ubuntu's terminal:
 
 ```shell
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -47,9 +44,6 @@ source ~/.bashrc
 
 ## Usage
 Explain how to use the project, including any important commands or configurations.
-
-## Contributing
-Explain how others can contribute to the project.
 
 ## License
 Include the license information for the project.
