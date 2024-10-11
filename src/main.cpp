@@ -2,23 +2,32 @@
 #include <ros.h>
 #include <sensor_msgs/Joy.h>
 
-const int firstMotorOne = 32; 
-const int firstMotorTwo = 33; 
-const int speedMotorOne = 23;
+const int firstMotorOne = 17;  // forward
+const int firstMotorTwo = 16;  // backward
+const int speedMotorOne = 5;   // enable
 
-const int secondMotorOne = 4;
-const int secondMotorTwo = 2; 
-const int speedMotorTwo = 15; 
+const int secondMotorOne = 4;  // forward
+const int secondMotorTwo = 0;  // backward
+const int speedMotorTwo = 2;   // enable
 
-const char* ssid = "SSID";
-const char* password = "PASSWORD";
+const int fourthMotorOne = 27;  // forward
+const int fourthMotorTwo = 26;  // backward
+const int speedMotorFour = 25; // enable
 
-IPAddress server(192, 168, 0, 0);
+const int thirdMotorOne = 12;  // forward
+const int thirdMotorTwo = 14;  // backward
+const int speedMotorThree = 13;  // enable
+
+const char* ssid = "Redmi"; 
+const char* password = "manuel1234"; 
+
+IPAddress server(192, 168, 217, 186); 
 const uint16_t serverPort = 11411; 
 
 WiFiClient client;
 ros::NodeHandle nh; 
 
+// Motor stop functions
 void stopFirstMotor() {
     digitalWrite(firstMotorOne, LOW);
     digitalWrite(firstMotorTwo, LOW);
@@ -31,13 +40,25 @@ void stopSecondMotor() {
     analogWrite(speedMotorTwo, 0);
 }
 
-void controlMotor(int motorOnePin, int motorTwoPin, int motorSpeedPin, float stickY) {
+void stopThirdMotor() {
+    digitalWrite(thirdMotorOne, LOW);
+    digitalWrite(thirdMotorTwo, LOW);
+    analogWrite(speedMotorThree, 0);
+}
+
+void stopFourthMotor() {
+    digitalWrite(fourthMotorOne, LOW);
+    digitalWrite(fourthMotorTwo, LOW);
+    analogWrite(speedMotorFour, 0);
+}
+
+void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpeedPin, float stickY) {
     const int stickForward = 1;
     const int stickBackward = -1;
 
-    int motorState = (stickY > 0.1) ? stickForward : (stickY < -0.1) ? stickBackward : 0;
+    int motorStateFB = (stickY > 0.1) ? stickForward : (stickY < -0.1) ? stickBackward : 0;
 
-    switch (motorState) {
+    switch (motorStateFB) {
         case stickForward:
             digitalWrite(motorOnePin, HIGH);
             digitalWrite(motorTwoPin, LOW);
@@ -57,16 +78,20 @@ void controlMotor(int motorOnePin, int motorTwoPin, int motorSpeedPin, float sti
 }
 
 void joyCallback(const sensor_msgs::Joy &joy_msg) {
-    float leftStickY = joy_msg.axes[4];  // vertical 
-    float rightStickY = joy_msg.axes[1]; // vertical
+    float leftStickY = joy_msg.axes[4];  // vertical left y
+    float rightStickY = joy_msg.axes[1]; // vertical right y
 
-    controlMotor(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY);
-    controlMotor(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY);
+    controlMotorForwardBackward(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY);
+    controlMotorForwardBackward(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY);
+    controlMotorForwardBackward(thirdMotorOne, thirdMotorTwo, speedMotorThree, rightStickY);  // Swap with fourth
+    controlMotorForwardBackward(fourthMotorOne, fourthMotorTwo, speedMotorFour, leftStickY);  // Swap with third
 }
+
 
 ros::Subscriber<sensor_msgs::Joy> sub("/joy", joyCallback);
 
 void setup() {
+    // Initialize motor pins
     pinMode(firstMotorOne, OUTPUT);
     pinMode(firstMotorTwo, OUTPUT);
     pinMode(speedMotorOne, OUTPUT);
@@ -74,6 +99,14 @@ void setup() {
     pinMode(secondMotorOne, OUTPUT);
     pinMode(secondMotorTwo, OUTPUT);
     pinMode(speedMotorTwo, OUTPUT);
+
+    pinMode(thirdMotorOne, OUTPUT);
+    pinMode(thirdMotorTwo, OUTPUT);
+    pinMode(speedMotorThree, OUTPUT);
+
+    pinMode(fourthMotorOne, OUTPUT);
+    pinMode(fourthMotorTwo, OUTPUT);
+    pinMode(speedMotorFour, OUTPUT);
 
     Serial.begin(115200);
     WiFi.begin(ssid, password);
@@ -83,12 +116,14 @@ void setup() {
     }
     Serial.println("WiFi connected");
 
-    nh.getHardware()->setConnection(server, serverPort); // TCP
+    nh.getHardware()->setConnection(server, serverPort);
     nh.initNode();
     nh.subscribe(sub);
     
     stopFirstMotor();
     stopSecondMotor();
+    stopThirdMotor();
+    stopFourthMotor();
 }
 
 void loop() {
