@@ -83,10 +83,9 @@ void joyCallback(const sensor_msgs::Joy &joy_msg) {
 
     controlMotorForwardBackward(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY);
     controlMotorForwardBackward(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY);
-    controlMotorForwardBackward(thirdMotorOne, thirdMotorTwo, speedMotorThree, rightStickY);  // Swap with fourth
-    controlMotorForwardBackward(fourthMotorOne, fourthMotorTwo, speedMotorFour, leftStickY);  // Swap with third
+    controlMotorForwardBackward(thirdMotorOne, thirdMotorTwo, speedMotorThree, rightStickY);
+    controlMotorForwardBackward(fourthMotorOne, fourthMotorTwo, speedMotorFour, leftStickY);
 }
-
 
 ros::Subscriber<sensor_msgs::Joy> sub("/joy", joyCallback);
 
