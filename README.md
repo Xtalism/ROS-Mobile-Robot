@@ -95,7 +95,7 @@ rosrun rosserial_python serial_node.py tcp
 
 To initialize our joy node using joy package:
 ```shell
-rosrun joy joy_node
+rosrun joy joy_node _dev:="/dev/input/jsx"
 ```
 
 If we want to see our joy node response:
