@@ -27,7 +27,6 @@ const uint16_t serverPort = 11411;
 WiFiClient client;
 ros::NodeHandle nh; 
 
-// Motor stop functions
 void stopFirstMotor() {
     digitalWrite(firstMotorOne, LOW);
     digitalWrite(firstMotorTwo, LOW);
@@ -52,22 +51,44 @@ void stopFourthMotor() {
     analogWrite(speedMotorFour, 0);
 }
 
-void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpeedPin, float stickY) {
+void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpeedPin, float stickY, float stickX, float RT, float LT) {
     const int stickForward = 1;
     const int stickBackward = -1;
 
+    const int stickLeft = 1;
+    const int stickRight = -1;
+
     int motorStateFB = (stickY > 0.1) ? stickForward : (stickY < -0.1) ? stickBackward : 0;
+    int motorStateLR = (stickX > 0.1) ? stickLeft : (stickX < -0.1) ? stickRight : 0;
 
     switch (motorStateFB) {
         case stickForward:
             digitalWrite(motorOnePin, HIGH);
             digitalWrite(motorTwoPin, LOW);
-            analogWrite(motorSpeedPin, abs(stickY * 255));
+            analogWrite(motorSpeedPin, (RT * -128) + (LT * 128)); // break and speed
             break;
         case stickBackward:
             digitalWrite(motorOnePin, LOW);
             digitalWrite(motorTwoPin, HIGH);
-            analogWrite(motorSpeedPin, abs(stickY * 255));
+            analogWrite(motorSpeedPin, (RT * -128) + (LT * 128)); // break and speed
+            break;
+        default:
+            digitalWrite(motorOnePin, LOW);
+            digitalWrite(motorTwoPin, LOW);
+            analogWrite(motorSpeedPin, 0);
+            break;
+    }
+
+    switch (motorStateLR) {
+        case stickLeft:
+            digitalWrite(motorOnePin, LOW);
+            digitalWrite(motorTwoPin , HIGH);
+            analogWrite(motorSpeedPin, (RT * -128) + (LT * 128)); // break and speed
+            break;
+        case stickRight:
+            digitalWrite(motorOnePin, HIGH);
+            digitalWrite(motorTwoPin, LOW);
+            analogWrite(motorSpeedPin, (RT * -128) + (LT * 128)); // break and speed
             break;
         default:
             digitalWrite(motorOnePin, LOW);
@@ -78,19 +99,24 @@ void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpee
 }
 
 void joyCallback(const sensor_msgs::Joy &joy_msg) {
-    float leftStickY = joy_msg.axes[4];  // vertical left y
-    float rightStickY = joy_msg.axes[1]; // vertical right y
+    float leftStickY = joy_msg.axes[4];
+    float rightStickY = joy_msg.axes[3];
+    
+    float rightStickX = joy_msg.axes[0];
+    float leftStickX = joy_msg.axes[1];
 
-    controlMotorForwardBackward(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY);
-    controlMotorForwardBackward(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY);
-    controlMotorForwardBackward(thirdMotorOne, thirdMotorTwo, speedMotorThree, rightStickY);
-    controlMotorForwardBackward(fourthMotorOne, fourthMotorTwo, speedMotorFour, leftStickY);
+    float RT = joy_msg.axes[5];
+    float LT =  joy_msg.axes[2];
+
+    controlMotorForwardBackward(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY, leftStickX, RT, LT);
+    controlMotorForwardBackward(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY, rightStickY, RT, LT);
+    controlMotorForwardBackward(thirdMotorOne, thirdMotorTwo, speedMotorThree, rightStickY, rightStickX, RT, LT);
+    controlMotorForwardBackward(fourthMotorOne, fourthMotorTwo, speedMotorFour, leftStickY, leftStickY, RT, LT);
 }
 
 ros::Subscriber<sensor_msgs::Joy> sub("/joy", joyCallback);
 
 void setup() {
-    // Initialize motor pins
     pinMode(firstMotorOne, OUTPUT);
     pinMode(firstMotorTwo, OUTPUT);
     pinMode(speedMotorOne, OUTPUT);
