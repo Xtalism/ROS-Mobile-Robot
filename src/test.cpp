@@ -52,7 +52,7 @@ void stopFourthMotor() {
     analogWrite(speedMotorFour, 0);
 }
 
-void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpeedPin, float stickY, float stickX) {
+void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpeedPin, float stickY, float stickX, float trigger) {
     const int stickForward = 1;
     const int stickBackward = -1;
 
@@ -66,12 +66,12 @@ void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpee
         case stickForward:
             digitalWrite(motorOnePin, HIGH);
             digitalWrite(motorTwoPin, LOW);
-            analogWrite(motorSpeedPin, abs(stickY * 255));
+            analogWrite(motorSpeedPin, (trigger * -255));
             break;
         case stickBackward:
             digitalWrite(motorOnePin, LOW);
             digitalWrite(motorTwoPin, HIGH);
-            analogWrite(motorSpeedPin, abs(stickY * 255));
+            analogWrite(motorSpeedPin, (trigger * -255));
             break;
         default:
             digitalWrite(motorOnePin, LOW);
@@ -84,12 +84,12 @@ void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpee
         case stickLeft:
             digitalWrite(motorOnePin, LOW);
             digitalWrite(motorTwoPin , HIGH);
-            analogWrite(motorSpeedPin, abs(stickX * 255));
+            analogWrite(motorSpeedPin, (trigger * -255));
             break;
         case stickRight:
             digitalWrite(motorOnePin, HIGH);
             digitalWrite(motorTwoPin, LOW);
-            analogWrite(motorSpeedPin, abs(stickX * 255));
+            analogWrite(motorSpeedPin, (trigger * -255));
             break;
         default:
             digitalWrite(motorOnePin, LOW);
@@ -101,14 +101,17 @@ void controlMotorForwardBackward(int motorOnePin, int motorTwoPin, int motorSpee
 
 void joyCallback(const sensor_msgs::Joy &joy_msg) {
     float leftStickY = joy_msg.axes[4];  // vertical left y
-    float rightStickY = joy_msg.axes[1]; // vertical right y
+    float rightStickY = joy_msg.axes[3]; // vertical right y
+    
     float rightStickX = joy_msg.axes[0];
-    float leftStickX = joy_msg.axes[3];
+    float leftStickX = joy_msg.axes[1];
 
-    controlMotorForwardBackward(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY, leftStickX);
-    controlMotorForwardBackward(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY, rightStickY);
-    controlMotorForwardBackward(thirdMotorOne, thirdMotorTwo, speedMotorThree, rightStickY, rightStickX);
-    controlMotorForwardBackward(fourthMotorOne, fourthMotorTwo, speedMotorFour, leftStickY, leftStickY);
+    float rightTrigger = joy_msg.axes[5];
+
+    controlMotorForwardBackward(firstMotorOne, firstMotorTwo, speedMotorOne, leftStickY, leftStickX, rightTrigger);
+    controlMotorForwardBackward(secondMotorOne, secondMotorTwo, speedMotorTwo, rightStickY, rightStickY, rightTrigger);
+    controlMotorForwardBackward(thirdMotorOne, thirdMotorTwo, speedMotorThree, rightStickY, rightStickX, rightTrigger);
+    controlMotorForwardBackward(fourthMotorOne, fourthMotorTwo, speedMotorFour, leftStickY, leftStickY, rightTrigger);
 }
 
 ros::Subscriber<sensor_msgs::Joy> sub("/joy", joyCallback);
