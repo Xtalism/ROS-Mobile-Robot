@@ -16,7 +16,7 @@ const int speedMotorThree = 13;
 
 const int fourthMotorOne = 26;  
 const int fourthMotorTwo = 27;  
-const int speedMotorFour = 25; 
+const int speedMotorFour = 25;
 
 int motorOnePins[] = {firstMotorOne, secondMotorOne, thirdMotorOne, fourthMotorOne};
 int motorTwoPins[] = {firstMotorTwo, secondMotorTwo, thirdMotorTwo, fourthMotorTwo};
