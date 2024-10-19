@@ -18,10 +18,10 @@ const int thirdMotorOne = 12;  // forward
 const int thirdMotorTwo = 14;  // backward
 const int speedMotorThree = 13;  // enable
 
-const char* ssid = "Redmi"; 
-const char* password = "manuel1234"; 
+const char* ssid = "MotherBase"; 
+const char* password = "@6830135@"; 
 
-IPAddress server(192, 168, 82, 186); 
+IPAddress server(192, 168, 100, 156); 
 const uint16_t serverPort = 11411; 
 
 WiFiClient client;
