@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <ros.h>
+#include <math.h>
 #include <sensor_msgs/Joy.h>
 
 const int firstMotorOne = 16;  // forward
@@ -39,20 +40,57 @@ void stopMotors(int motorOnePins[], int motorTwoPins[], int motorSpeedPins[]) {
     }
 }
 
-void controlMotor(int motorOnePins[], int motorTwoPins[], int motorSpeedPins[], float stickY, float RT, float LT) {
+void controlMotor(int motorOnePins[], int motorTwoPins[], int motorSpeedPins[], float stickY, float RT, float LT, float angle) {
     const int stickValuePositive = 1;
     const int stickValueNegative = -1;
+
+    if (angle < 0) {
+        angle += 360;
+    }
+
+    int nearestMultipleOf45 = round(angle / 45.0) * 45.0;
 
     int motorState = (stickY > 0.1) ? stickValuePositive : (stickY < -0.1) ? stickValueNegative : 0;
 
     for (int i = 0; i < 4; i++) {
         switch (motorState) {
-            case stickValuePositive:
+            case 0:
+            case 360:
                 digitalWrite(motorOnePins[i], HIGH);
                 digitalWrite(motorTwoPins[i], LOW);
                 analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
                 break;
-            case stickValueNegative:
+            case 45:
+                digitalWrite(motorOnePins[i], LOW);
+                digitalWrite(motorTwoPins[i], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                break;
+            case 90:
+                digitalWrite(motorOnePins[i], LOW);
+                digitalWrite(motorTwoPins[i], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                break;
+            case 135:
+                digitalWrite(motorOnePins[i], LOW);
+                digitalWrite(motorTwoPins[i], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                break;
+            case 180:
+                digitalWrite(motorOnePins[i], LOW);
+                digitalWrite(motorTwoPins[i], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                break;
+            case 225:
+                digitalWrite(motorOnePins[i], LOW);
+                digitalWrite(motorTwoPins[i], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                break;
+            case 270:
+                digitalWrite(motorOnePins[i], LOW);
+                digitalWrite(motorTwoPins[i], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                break;
+            case 315:
                 digitalWrite(motorOnePins[i], LOW);
                 digitalWrite(motorTwoPins[i], HIGH);
                 analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
@@ -74,7 +112,9 @@ void joyCallback(const sensor_msgs::Joy &joy_msg) {
     float LT =  joy_msg.axes[2];
     float RT = joy_msg.axes[5];
 
-    controlMotor(motorOnePins, motorTwoPins, motorSpeedPins, leftStickY, RT, LT);
+    float angle = atan2(leftStickY, rightStickX) * 180.0 / PI;
+
+    controlMotor(motorOnePins, motorTwoPins, motorSpeedPins, leftStickY, RT, LT, angle);
 }
 
 ros::Subscriber<sensor_msgs::Joy> sub("/joy", joyCallback);
