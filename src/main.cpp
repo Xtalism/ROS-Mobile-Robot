@@ -3,28 +3,12 @@
 #include <math.h>
 #include <sensor_msgs/Joy.h>
 
-const int firstMotorOne = 16;  // forward
-const int firstMotorTwo = 17;  // backward
-const int speedMotorOne = 5;   // enable
+int motorOnePins[] = {16, 0, 14, 26};
+int motorTwoPins[] = {17, 4, 12, 27};
+int motorSpeedPins[] = {5, 2, 13, 25};
 
-const int secondMotorOne = 0;  
-const int secondMotorTwo = 4;  
-const int speedMotorTwo = 2;   
-
-const int thirdMotorOne = 14;  
-const int thirdMotorTwo = 12;  
-const int speedMotorThree = 13;
-
-const int fourthMotorOne = 26;  
-const int fourthMotorTwo = 27;  
-const int speedMotorFour = 25;
-
-int motorOnePins[] = {firstMotorOne, secondMotorOne, thirdMotorOne, fourthMotorOne};
-int motorTwoPins[] = {firstMotorTwo, secondMotorTwo, thirdMotorTwo, fourthMotorTwo};
-int motorSpeedPins[] = {speedMotorOne, speedMotorTwo, speedMotorThree, speedMotorFour};
-
-const char* ssid = "MotherBase"; 
-const char* password = "@6830135@"; 
+const char* ssid = ""; 
+const char* password = ""; 
 
 IPAddress server(192, 168, 100, 213); 
 const uint16_t serverPort = 11411; 
