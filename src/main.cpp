@@ -26,7 +26,7 @@ int motorSpeedPins[] = {speedMotorOne, speedMotorTwo, speedMotorThree, speedMoto
 const char* ssid = "MotherBase"; 
 const char* password = "@6830135@"; 
 
-IPAddress server(192, 168, 100, 156); 
+IPAddress server(192, 168, 100, 213); 
 const uint16_t serverPort = 11411; 
 
 WiFiClient client;
@@ -50,50 +50,54 @@ void controlMotor(int motorOnePins[], int motorTwoPins[], int motorSpeedPins[], 
 
     int nearestMultipleOf45 = round(angle / 45.0) * 45.0;
 
-    int motorState = (stickY > 0.1) ? stickValuePositive : (stickY < -0.1) ? stickValueNegative : 0;
+    Serial.println(nearestMultipleOf45);
 
     for (int i = 0; i < 4; i++) {
-        switch (motorState) {
-            case 0:
-            case 360:
+        switch (nearestMultipleOf45) {
+            case -0:
+            case 360: // left
+                stopMotors(motorOnePins, motorTwoPins, motorSpeedPins);
+                break;
+            case 45: // top-left
+                digitalWrite(motorOnePins[0], HIGH);
+                digitalWrite(motorTwoPins[0], LOW);
+                digitalWrite(motorOnePins[2], HIGH);
+                digitalWrite(motorTwoPins[2], LOW);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255));
+                break;
+            case 90: // top
                 digitalWrite(motorOnePins[i], HIGH);
                 digitalWrite(motorTwoPins[i], LOW);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255));
                 break;
-            case 45:
+            case 135: // top-right
+                digitalWrite(motorOnePins[1], HIGH);
+                digitalWrite(motorTwoPins[1], LOW);
+                digitalWrite(motorOnePins[3], HIGH);
+                digitalWrite(motorTwoPins[3], LOW);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255));
+                break;
+            case 180: // right
+                stopMotors(motorOnePins, motorTwoPins, motorSpeedPins);
+                break;
+            case 225: // bottom-right
+                digitalWrite(motorOnePins[0], LOW);
+                digitalWrite(motorTwoPins[0], HIGH);
+                digitalWrite(motorOnePins[2], LOW);
+                digitalWrite(motorTwoPins[2], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255));
+                break;
+            case 270: // bottom
                 digitalWrite(motorOnePins[i], LOW);
                 digitalWrite(motorTwoPins[i], HIGH);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255));
                 break;
-            case 90:
-                digitalWrite(motorOnePins[i], LOW);
-                digitalWrite(motorTwoPins[i], HIGH);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
-                break;
-            case 135:
-                digitalWrite(motorOnePins[i], LOW);
-                digitalWrite(motorTwoPins[i], HIGH);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
-                break;
-            case 180:
-                digitalWrite(motorOnePins[i], LOW);
-                digitalWrite(motorTwoPins[i], HIGH);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
-                break;
-            case 225:
-                digitalWrite(motorOnePins[i], LOW);
-                digitalWrite(motorTwoPins[i], HIGH);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
-                break;
-            case 270:
-                digitalWrite(motorOnePins[i], LOW);
-                digitalWrite(motorTwoPins[i], HIGH);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
-                break;
-            case 315:
-                digitalWrite(motorOnePins[i], LOW);
-                digitalWrite(motorTwoPins[i], HIGH);
-                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255)); // break and speed
+            case 315: // bottom-left
+                digitalWrite(motorOnePins[1], LOW);
+                digitalWrite(motorTwoPins[1], HIGH);
+                digitalWrite(motorOnePins[3], LOW);
+                digitalWrite(motorTwoPins[3], HIGH);
+                analogWrite(motorSpeedPins[i], (RT * -255) + (LT * 255));
                 break;
             default:
                 stopMotors(motorOnePins, motorTwoPins, motorSpeedPins);
@@ -112,7 +116,7 @@ void joyCallback(const sensor_msgs::Joy &joy_msg) {
     float LT =  joy_msg.axes[2];
     float RT = joy_msg.axes[5];
 
-    float angle = atan2(leftStickY, rightStickX) * 180.0 / PI;
+    float angle = atan2(leftStickY, leftStickX) * 180.0 / PI;
 
     controlMotor(motorOnePins, motorTwoPins, motorSpeedPins, leftStickY, RT, LT, angle);
 }
