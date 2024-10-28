@@ -7,10 +7,10 @@ int motorOnePins[] = {16, 0, 14, 26};
 int motorTwoPins[] = {17, 4, 12, 27};
 int motorSpeedPins[] = {5, 2, 13, 25};
 
-const char* ssid = ""; 
-const char* password = ""; 
+const char* ssid = "Redmi"; 
+const char* password = "manuel1234"; 
 
-IPAddress server(192, 168, 100, 213); 
+IPAddress server(192, 168, 98, 186); 
 const uint16_t serverPort = 11411; 
 
 WiFiClient client;
