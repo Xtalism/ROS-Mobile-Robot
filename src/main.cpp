@@ -7,11 +7,11 @@ int motorOnePins[] = {16, 0, 14, 26};
 int motorTwoPins[] = {17, 4, 12, 27};
 int motorSpeedPins[] = {5, 2, 13, 25};
 
-const char *ssid = "";
-const char *password = "";
+const char* ssid = ""; 
+const char* password = ""; 
 
-IPAddress server(192, 168, 100, 213);
-const uint16_t serverPort = 11411;
+IPAddress server(192, 168, 100, 213); 
+const uint16_t serverPort = 11411; 
 
 WiFiClient client;
 ros::NodeHandle nh;
